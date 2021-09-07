@@ -22,6 +22,9 @@ public class UserNameAuthProvider  implements AuthenticationProvider {
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String userName = authentication.getName();
         String password = (String) authentication.getCredentials();
+        if(userName==null || password==null){
+            return  authentication;
+        }
         UserDetails user = appUserDetailService.loadUserByUsername(userName);
         if (passwordEncoder.matches(password, user.getPassword())) {
             return new UserNamePasswordAuthentication(userName,password,user.getAuthorities());
