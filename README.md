@@ -1,8 +1,13 @@
 # MultiAuthprovider
+
 create database secdb
+
 grant all on database secdb to <username>
+	
 GRANT all ON DATABASE secdb TO tclocal_migratoruser;
+	
 create tables
+	
 CREATE TABLE public.users (
 	username varchar NOT NULL,
 	"password" varchar NOT NULL,
