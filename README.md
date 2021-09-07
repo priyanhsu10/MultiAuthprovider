@@ -19,5 +19,5 @@ CREATE TABLE public.users (
 CREATE TABLE public.tblotp (
 	id serial NOT NULL,
 	username varchar NOT NULL,
-	otp varchar NOT NULL
+	otp_code varchar NOT NULL
 );
