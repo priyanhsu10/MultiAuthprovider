@@ -9,6 +9,7 @@ public class Otp {
 @GeneratedValue(strategy = GenerationType.SEQUENCE)
  private  int id;
 private String username;
+@Column(name = "otp_code")
 private  String optCode;
 
     public int getId() {

@@ -26,7 +26,7 @@ public class UserNameAuthProvider  implements AuthenticationProvider {
         if (passwordEncoder.matches(password, user.getPassword())) {
             return new UserNamePasswordAuthentication(userName,password,user.getAuthorities());
         }else{
-            throw  new BadCredentialsException("Invalid Credentials");
+            return   authentication;
         }
     }
     @Override

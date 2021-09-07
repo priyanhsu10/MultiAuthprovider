@@ -1,7 +1,10 @@
 package multipleauthprovider.example.multipleauthprovider.config;
 
+import multipleauthprovider.example.multipleauthprovider.security.filters.TokenAuthFilter;
 import multipleauthprovider.example.multipleauthprovider.security.filters.UsernamePasswordAuthFilter;
+import multipleauthprovider.example.multipleauthprovider.security.manger.TokenManager;
 import multipleauthprovider.example.multipleauthprovider.security.providers.OtpAuthProvider;
+import multipleauthprovider.example.multipleauthprovider.security.providers.TokenAuthProvider;
 import multipleauthprovider.example.multipleauthprovider.security.providers.UserNameAuthProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -20,8 +23,8 @@ public class ProjectConfig extends WebSecurityConfigurerAdapter {
     private UserNameAuthProvider userNameAuthProvider;
     @Autowired
     private OtpAuthProvider otpAuthProvider;
-    @Autowired
-    private UsernamePasswordAuthFilter usernamePasswordAuthFilter;
+ @Autowired
+ private  TokenAuthProvider tokenAuthProvider;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -33,12 +36,14 @@ public class ProjectConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(userNameAuthProvider)
-                .authenticationProvider(otpAuthProvider);
+                .authenticationProvider(otpAuthProvider)
+        .authenticationProvider(tokenAuthProvider);
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.addFilterAt(usernamePasswordAuthFilter, BasicAuthenticationFilter.class);
+        http.addFilterAt(usernamePasswordAuthFilter(), BasicAuthenticationFilter.class);
+        http.addFilterAfter(tokenAuthFilter(),UsernamePasswordAuthFilter.class);
         http
                 .csrf()
                 .disable()
@@ -53,4 +58,14 @@ public class ProjectConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
+    @Bean
+   public TokenAuthFilter tokenAuthFilter(){
+        return  new TokenAuthFilter();
+    }
+    @Bean
+   public UsernamePasswordAuthFilter usernamePasswordAuthFilter()
+    {
+        return  new UsernamePasswordAuthFilter();
+    }
+
 }

@@ -25,10 +25,10 @@ public class OtpAuthProvider implements AuthenticationProvider  {
         String otp= (String) authentication.getCredentials();
       Otp otp1  =repository.findByUsername(userName)
               .orElseThrow(()->new BadCredentialsException("Invalid Opt"));
-      if(otp1.getOptCode().equals(otp1)){
+      if(otp1.getOptCode().equals(otp)){
           return  new OtpAuthentication(userName,otp, Arrays.asList(new SimpleGrantedAuthority("READ")));
       }else {
-          throw new BadCredentialsException("Invalid Otp");
+          return  authentication;
       }
 
     }
